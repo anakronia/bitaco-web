@@ -37,9 +37,17 @@ const title = titleByLang[lang];
 // app) — se usa el de EN como respaldo, más legible que el de ES para
 // quien no habla español.
 const bannerQuiz = lang === 'es' ? 'quiz-chilango.webp' : 'quiz-chilango-en.webp';
+
+const keywordsByLang: Record<Lang, string> = {
+  es: 'qué tan chilango eres, quiz chilango, test CDMX, cuestionario Ciudad de México, cultura chilanga, slang chilango, Bitáco quiz',
+  en: 'how chilango are you, Mexico City quiz, CDMX culture test, Mexican slang quiz, Bitáco quiz',
+  fr: 'quiz chilango, culture de Mexico, test Ciudad de Mexico, argot mexicain',
+  de: 'chilango quiz, Mexiko-Stadt Kultur Test, mexikanischer Slang Quiz',
+  pt: 'quiz chilango, teste cultura Cidade do México, gírias mexicanas quiz',
+};
 ---
 
-<Layout lang={lang} title={`${title} — Bitáco`} description={t('quiz.subtitle')}>
+<Layout lang={lang} title={`${title} — Bitáco`} description={t('quiz.subtitle')} keywords={keywordsByLang[lang]}>
   <div class="texture-parchment">
     <div class="mx-auto max-w-2xl px-4 py-14 md:py-20">
       <img src={`/brand/banners/${bannerQuiz}`} alt={title} class="w-full max-w-xs mx-auto mb-8 -rotate-1 drop-shadow-md" />

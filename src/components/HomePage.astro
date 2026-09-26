@@ -66,6 +66,14 @@ const titleByLang: Record<Lang, string> = {
   pt: 'Bitáco — Desafios e conquistas na Cidade do México',
 };
 
+const keywordsByLang: Record<Lang, string> = {
+  es: 'Bitáco, app CDMX, qué hacer en la Ciudad de México, retos CDMX, turismo CDMX gratis, logros de viaje, pasaporte de viaje, qué tan chilango eres, plan CDMX, guía Ciudad de México, app gratis de viajes',
+  en: 'Bitáco, CDMX app, things to do in Mexico City, Mexico City challenges, free Mexico City travel app, travel achievements, travel passport app, Mexico City itinerary, Mexico City guide, free travel app',
+  fr: 'Bitáco, application Mexico, que faire à Mexico, défis Mexico, application de voyage gratuite, passeport de voyage, guide Mexico, itinéraire Mexico',
+  de: 'Bitáco, Mexiko-Stadt App, was in Mexiko-Stadt unternehmen, Mexiko-Stadt Herausforderungen, kostenlose Reise-App, Reisepass App, Mexiko-Stadt Reiseführer, Mexiko-Stadt Reiseroute',
+  pt: 'Bitáco, app Cidade do México, o que fazer na Cidade do México, desafios CDMX, app de viagem grátis, passaporte de viagem, roteiro Cidade do México, guia Cidade do México',
+};
+
 const rotaciones = ['-rotate-2', 'rotate-1', '-rotate-1', 'rotate-2', 'rotate-1', '-rotate-2', 'rotate-2', '-rotate-1'];
 ---
 
@@ -73,6 +81,7 @@ const rotaciones = ['-rotate-2', 'rotate-1', '-rotate-1', 'rotate-2', 'rotate-1'
   lang={lang}
   title={titleByLang[lang]}
   description={t('hero.subtitle')}
+  keywords={keywordsByLang[lang]}
 >
   <!-- Hero -->
   <section class="relative overflow-hidden texture-parchment">

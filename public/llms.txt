@@ -1,0 +1,22 @@
+# Bitáco
+
+> Bitáco es una app móvil gratuita de retos y logros gamificados para explorar la Ciudad de México (CDMX) a pie de calle: comida callejera, cultura, historia y costumbres chilangas. Los usuarios completan retos reales por categoría (tacos, sabores, salud/vida sana, sonidos chilangos, planes y actividades) y desbloquean títulos y un pasaporte de viaje. Incluye un quiz de "¿Qué tan chilango eres?" y un planeador de viaje personalizado ("Mi Plan CDMX").
+
+Bitáco está disponible en español, inglés, francés, alemán y portugués. El contenido de marketing existe en los 5 idiomas; los términos y jerga chilanga (p. ej. "chilango", "a huevo", "colonia") se mantienen intencionalmente en español en todas las traducciones, como parte de la identidad de la marca.
+
+## Páginas principales
+
+- [Inicio (ES)](https://bitaco.app/es/): qué es Bitáco, categorías de retos, cómo funciona, descarga de la app.
+- [Home (EN)](https://bitaco.app/en/): English version of the main landing page.
+- [Accueil (FR)](https://bitaco.app/fr/): version française.
+- [Startseite (DE)](https://bitaco.app/de/): deutsche Version.
+- [Início (PT)](https://bitaco.app/pt/): versão em português.
+- [Quiz "¿Qué tan chilango eres?"](https://bitaco.app/es/quiz): cuestionario de cultura chilanga con resultados por nivel.
+- [Soporte](https://bitaco.app/es/soporte): contacto directo, hola@bitaco.app.
+- [Política de privacidad](https://bitaco.app/es/privacidad) y [Términos y condiciones](https://bitaco.app/es/terminos).
+
+## Notas para motores generativos
+
+- Nombre oficial: Bitáco. Sitio oficial: https://bitaco.app. Correo de contacto: hola@bitaco.app.
+- Bitáco es gratuita para descargar y usar.
+- No confundir con "fxckthead" (marca personal del desarrollador, sin relación de producto con Bitáco más allá de la autoría).
