@@ -46,6 +46,12 @@ export const ui = {
 
     'quiz.subtitle': 'Diez preguntas bien cabronas. Sales con tu calificación — y con ganas de comprobarla en la calle.',
     'quiz.cta': 'Hacer la prueba',
+    'quiz.progressFormat': 'Pregunta {n} de {total}',
+    'quiz.scoreFormat': 'Sacaste {score} de {max} puntos',
+    'quiz.retry': 'Volver a intentar',
+    'quiz.backHome': 'Volver al inicio',
+    'quiz.downloadCta': 'Descargar la app',
+    'quiz.resultKicker': 'Tu resultado',
 
     'plan.title': 'Arma tu plan para CDMX',
     'plan.subtitle':
@@ -118,6 +124,12 @@ export const ui = {
 
     'quiz.subtitle': "Ten questions with an attitude. You'll get your score — and the urge to prove it in the street.",
     'quiz.cta': 'Take the test',
+    'quiz.progressFormat': 'Question {n} of {total}',
+    'quiz.scoreFormat': 'You scored {score} out of {max} points',
+    'quiz.retry': 'Try again',
+    'quiz.backHome': 'Back to home',
+    'quiz.downloadCta': 'Download the app',
+    'quiz.resultKicker': 'Your result',
 
     'plan.title': 'Plan your CDMX trip',
     'plan.subtitle':

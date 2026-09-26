@@ -30,9 +30,9 @@ export default defineConfig({
     sitemap({
       // Excluye del sitemap todo lo que hoy es placeholder / no debe
       // indexarse (mismo criterio que el meta noindex de cada página) —
-      // privacidad/términos/soporte ya tienen contenido real, negocios
-      // está oculta a propósito, y quiz/plan siguen sin construir.
-      filter: (page) => !['negocios', 'quiz', 'plan'].some((slug) => page.includes(`/${slug}`)),
+      // privacidad/términos/soporte/quiz ya tienen contenido real,
+      // negocios está oculta a propósito, y plan sigue sin construir.
+      filter: (page) => !['negocios', 'plan'].some((slug) => page.includes(`/${slug}`)),
     }),
   ],
 });

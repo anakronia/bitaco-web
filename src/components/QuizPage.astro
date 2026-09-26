@@ -1,0 +1,147 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { type Lang, useTranslations } from '../i18n/ui';
+import { QUIZ_ES, QUIZ_EN, QUIZ_TIERS_ES, QUIZ_TIERS_EN, QUIZ_TITLE_ES, QUIZ_TITLE_EN } from '../data/chilangoQuiz';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+
+const questions = lang === 'es' ? QUIZ_ES : QUIZ_EN;
+const tiers = lang === 'es' ? QUIZ_TIERS_ES : QUIZ_TIERS_EN;
+const title = lang === 'es' ? QUIZ_TITLE_ES : QUIZ_TITLE_EN;
+const bannerQuiz = lang === 'es' ? 'quiz-chilango.webp' : 'quiz-chilango-en.webp';
+---
+
+<Layout lang={lang} title={`${title} — Bitáco`} description={t('quiz.subtitle')}>
+  <div class="texture-parchment">
+    <div class="mx-auto max-w-2xl px-4 py-14 md:py-20">
+      <img src={`/brand/banners/${bannerQuiz}`} alt={title} class="w-full max-w-xs mx-auto mb-8 -rotate-1 drop-shadow-md" />
+
+      <div id="quiz-app" class="bg-white rounded-3xl shadow-lg p-6 md:p-10">
+        <!-- Vista de pregunta -->
+        <div id="quiz-question-view">
+          <div class="h-1.5 w-full bg-black/10 rounded-full overflow-hidden mb-4">
+            <div id="quiz-progress-bar" class="h-full bg-brand-accent transition-all duration-300" style="width: 0%"></div>
+          </div>
+          <p id="quiz-progress-label" class="text-xs font-bold uppercase tracking-widest text-brand-accent mb-4"></p>
+          <p id="quiz-question-text" class="font-display font-semibold text-xl md:text-2xl mb-6 text-balance"></p>
+          <div id="quiz-options" class="flex flex-col gap-3"></div>
+        </div>
+
+        <!-- Vista de resultado -->
+        <div id="quiz-result-view" class="hidden text-center">
+          <p class="uppercase tracking-widest text-brand-accent font-bold text-sm mb-3">{t('quiz.resultKicker')}</p>
+          <h2 id="quiz-result-title" class="font-display font-black text-3xl md:text-4xl mb-3 text-balance"></h2>
+          <p id="quiz-result-score" class="text-brand-bg/60 mb-6"></p>
+          <p id="quiz-result-reason" class="text-brand-bg/80 text-lg mb-8 max-w-md mx-auto"></p>
+
+          <div class="flex flex-col gap-3 max-w-xs mx-auto">
+            <a
+              href={`/${lang}/#descargar`}
+              class="font-display bg-brand-accent text-white text-sm font-bold px-5 py-3 rounded-full"
+            >
+              {t('quiz.downloadCta')}
+            </a>
+            <button
+              id="quiz-retry-btn"
+              type="button"
+              class="font-display border-2 border-brand-accent text-brand-accent text-sm font-bold px-5 py-3 rounded-full"
+            >
+              {t('quiz.retry')}
+            </button>
+            <a href={`/${lang}/`} class="text-sm text-brand-bg/50 underline underline-offset-4 mt-2">
+              {t('quiz.backHome')}
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</Layout>
+
+<script
+  define:vars={{
+    questions,
+    tiers,
+    progressFormat: t('quiz.progressFormat'),
+    scoreFormat: t('quiz.scoreFormat'),
+  }}
+>
+  function shuffle(items) {
+    const arr = items.slice();
+    for (let i = arr.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [arr[i], arr[j]] = [arr[j], arr[i]];
+    }
+    return arr;
+  }
+
+  function shuffleQuiz(qs) {
+    return qs.map((q) => ({ ...q, opciones: shuffle(q.opciones) }));
+  }
+
+  let state = { questions: shuffleQuiz(questions), index: 0, score: 0 };
+
+  const questionView = document.getElementById('quiz-question-view');
+  const resultView = document.getElementById('quiz-result-view');
+  const progressBar = document.getElementById('quiz-progress-bar');
+  const progressLabel = document.getElementById('quiz-progress-label');
+  const questionText = document.getElementById('quiz-question-text');
+  const optionsEl = document.getElementById('quiz-options');
+  const resultTitle = document.getElementById('quiz-result-title');
+  const resultScore = document.getElementById('quiz-result-score');
+  const resultReason = document.getElementById('quiz-result-reason');
+
+  function renderQuestion() {
+    const total = state.questions.length;
+    const q = state.questions[state.index];
+    progressBar.style.width = `${(state.index / total) * 100}%`;
+    progressLabel.textContent = progressFormat
+      .replace('{n}', String(state.index + 1))
+      .replace('{total}', String(total));
+    questionText.textContent = q.pregunta;
+    optionsEl.innerHTML = '';
+    q.opciones.forEach((op) => {
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className =
+        'text-left border-2 border-black/10 hover:border-brand-accent bg-[#FAF8F4] rounded-2xl px-4 py-3.5 text-sm md:text-base transition-colors';
+      btn.textContent = op.texto;
+      btn.addEventListener('click', () => elegir(op));
+      optionsEl.appendChild(btn);
+    });
+  }
+
+  function elegir(opcion) {
+    state.score += opcion.puntos;
+    if (state.index + 1 < state.questions.length) {
+      state.index += 1;
+      renderQuestion();
+    } else {
+      progressBar.style.width = '100%';
+      renderResult();
+    }
+  }
+
+  function renderResult() {
+    const tier = tiers.find((r) => state.score >= r.min && state.score <= r.max) ?? tiers[0];
+    questionView.classList.add('hidden');
+    resultView.classList.remove('hidden');
+    resultTitle.textContent = tier.resultado;
+    resultScore.textContent = scoreFormat.replace('{score}', String(state.score)).replace('{max}', '30');
+    resultReason.textContent = tier.razon;
+  }
+
+  document.getElementById('quiz-retry-btn').addEventListener('click', () => {
+    state = { questions: shuffleQuiz(questions), index: 0, score: 0 };
+    resultView.classList.add('hidden');
+    questionView.classList.remove('hidden');
+    renderQuestion();
+  });
+
+  renderQuestion();
+</script>
