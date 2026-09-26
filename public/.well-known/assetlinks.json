@@ -3,8 +3,8 @@
     "relation": ["delegate_permission/common.handle_all_urls"],
     "target": {
       "namespace": "android_app",
-      "package_name": "TODO_com.tuempresa.bitaco",
-      "sha256_cert_fingerprints": ["TODO_SHA256_DE_LA_FIRMA_DE_RELEASE"]
+      "package_name": "com.fxckthead.bitaco",
+      "sha256_cert_fingerprints": ["A1:71:DD:8B:5E:CF:C1:4F:9C:B1:72:22:62:D8:76:2B:A9:CC:5D:B5:A4:78:C0:5F:B0:03:60:6D:28:CD:9C:A7"]
     }
   }
 ]
