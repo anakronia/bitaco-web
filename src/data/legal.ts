@@ -184,7 +184,7 @@ export const PRIVACIDAD_ES: LegalSection[] = [
   {
     titulo: '1. Quién es responsable de tus datos',
     texto:
-      'Bitáco es desarrollada y operada de forma independiente por su equipo creador (contacto: contacto@fxckthead.com). Para efectos de la Ley Federal de Protección de Datos Personales en Posesión de los Particulares (LFPDPPP), este equipo es el responsable del tratamiento de tus datos personales.',
+      'Bitáco es desarrollada y operada de forma independiente por su equipo creador (contacto: hola@bitaco.app). Para efectos de la Ley Federal de Protección de Datos Personales en Posesión de los Particulares (LFPDPPP), este equipo es el responsable del tratamiento de tus datos personales.',
   },
   {
     titulo: '2. Qué información recopilamos',
@@ -209,7 +209,7 @@ export const PRIVACIDAD_ES: LegalSection[] = [
   {
     titulo: '6. Tus derechos ARCO y cómo eliminar tu cuenta',
     texto:
-      'Tienes derecho a Acceder, Rectificar, Cancelar y Oponerte (derechos ARCO) al tratamiento de tus datos, y a revocar tu consentimiento en cualquier momento. Puedes borrar tu cuenta y toda tu información en cualquier momento, directamente desde la app: Ajustes → Eliminar mi perfil. Esta acción es inmediata y no se puede deshacer. Si prefieres ejercer tus derechos por correo, escríbenos a contacto@fxckthead.com.',
+      'Tienes derecho a Acceder, Rectificar, Cancelar y Oponerte (derechos ARCO) al tratamiento de tus datos, y a revocar tu consentimiento en cualquier momento. Puedes borrar tu cuenta y toda tu información en cualquier momento, directamente desde la app: Ajustes → Eliminar mi perfil. Esta acción es inmediata y no se puede deshacer. Si prefieres ejercer tus derechos por correo, escríbenos a hola@bitaco.app.',
   },
   {
     titulo: '7. Menores de edad',
@@ -231,7 +231,7 @@ export const PRIVACIDAD_EN: LegalSection[] = [
   {
     titulo: '1. Who is responsible for your data',
     texto:
-      'Bitáco is developed and operated independently by its creator team (contact: contacto@fxckthead.com). Under Mexico\'s Federal Law on Protection of Personal Data Held by Private Parties (LFPDPPP), this team is the data controller for your personal data.',
+      'Bitáco is developed and operated independently by its creator team (contact: hola@bitaco.app). Under Mexico\'s Federal Law on Protection of Personal Data Held by Private Parties (LFPDPPP), this team is the data controller for your personal data.',
   },
   {
     titulo: '2. What information we collect',
@@ -256,7 +256,7 @@ export const PRIVACIDAD_EN: LegalSection[] = [
   {
     titulo: '6. Your data rights and how to delete your account',
     texto:
-      "You have the right to Access, Rectify, Cancel, and Object (ARCO rights) to the processing of your data, and to withdraw consent at any time. You can delete your account and all your information at any time, directly from the app: Settings → Delete my profile. This action is immediate and cannot be undone. If you'd rather exercise these rights by email, write to us at contacto@fxckthead.com.",
+      "You have the right to Access, Rectify, Cancel, and Object (ARCO rights) to the processing of your data, and to withdraw consent at any time. You can delete your account and all your information at any time, directly from the app: Settings → Delete my profile. This action is immediate and cannot be undone. If you'd rather exercise these rights by email, write to us at hola@bitaco.app.",
   },
   {
     titulo: '7. Minors',
