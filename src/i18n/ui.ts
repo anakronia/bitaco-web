@@ -12,8 +12,7 @@ export const defaultLang: Lang = 'es';
 
 export const ui = {
   es: {
-    'nav.home': 'Inicio',
-    'nav.soporte': 'Soporte',
+    'nav.tagline': 'Tu app para descubrir de una forma diferente la CDMX.',
     'nav.descargar': 'Descargar',
 
     'hero.kicker': 'Bienvenido a la colección',
@@ -90,8 +89,7 @@ export const ui = {
     'suggest.err': 'Algo falló — intenta de nuevo en un rato.',
   },
   en: {
-    'nav.home': 'Home',
-    'nav.soporte': 'Support',
+    'nav.tagline': 'Your app to discover CDMX in a different way.',
     'nav.descargar': 'Download',
 
     'hero.kicker': 'Welcome to the collection',
