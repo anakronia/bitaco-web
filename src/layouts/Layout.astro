@@ -1,0 +1,101 @@
+---
+import '../styles/global.css';
+import { type Lang, useTranslations } from '../i18n/ui';
+
+interface Props {
+  lang: Lang;
+  title: string;
+  description: string;
+  noindex?: boolean;
+}
+
+const { lang, title, description, noindex = false } = Astro.props;
+const t = useTranslations(lang);
+const otherLang: Lang = lang === 'es' ? 'en' : 'es';
+
+// Misma ruta, otro idioma — asume que toda página vive en /es/... o /en/...
+// (routing prefixDefaultLocale: true en astro.config.mjs), así que basta
+// con reemplazar el primer segmento de la URL actual.
+const currentPath = Astro.url.pathname;
+const altPath = currentPath.replace(`/${lang}`, `/${otherLang}`) || `/${otherLang}/`;
+---
+
+<!doctype html>
+<html lang={lang}>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+    <!-- Mismas fuentes que la app (src/theme.ts en APPbitaco). -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..900;1,9..144,400..900&family=Manrope:wght@400..800&display=swap"
+      rel="stylesheet"
+    />
+
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    {noindex && <meta name="robots" content="noindex, nofollow" />}
+
+    <link rel="canonical" href={new URL(currentPath, Astro.site)} />
+    <link rel="alternate" hreflang={lang} href={new URL(currentPath, Astro.site)} />
+    <link rel="alternate" hreflang={otherLang} href={new URL(altPath, Astro.site)} />
+    <link rel="alternate" hreflang="x-default" href={new URL(currentPath.replace(`/${lang}`, '/es'), Astro.site)} />
+
+    <!-- Open Graph -->
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content={lang === 'es' ? 'es_MX' : 'en_US'} />
+
+    <!-- Smart App Banner (iOS) — actualizar apple-itunes-app cuando exista el ID real en App Store -->
+    <!-- <meta name="apple-itunes-app" content="app-id=TODO" /> -->
+  </head>
+  <body class="min-h-screen flex flex-col">
+    <header class="border-b border-black/5">
+      <div class="mx-auto max-w-6xl px-4 py-4 flex items-center justify-between">
+        <a href={`/${lang}/`} class="flex items-center gap-2">
+          <img src="/brand/bitaco-logo-light-bg.svg" alt="Bitáco" class="h-8 w-auto" />
+        </a>
+        <nav class="hidden md:flex items-center gap-6 font-medium text-sm">
+          <a href={`/${lang}/`}>{t('nav.home')}</a>
+          <a href={`/${lang}/soporte`}>{t('nav.soporte')}</a>
+        </nav>
+        <div class="flex items-center gap-4">
+          <a href={altPath} class="text-sm font-semibold uppercase tracking-wide">{otherLang}</a>
+          <a
+            href="#descargar"
+            class="font-display rounded-full bg-brand-accent text-white text-sm font-bold px-4 py-2"
+          >
+            {t('nav.descargar')}
+          </a>
+        </div>
+      </div>
+    </header>
+
+    <main class="flex-1">
+      <slot />
+    </main>
+
+    <footer class="bg-brand-ink text-brand-cream">
+      <div class="mx-auto max-w-6xl px-4 py-10 flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+        <img src="/brand/bitaco-logo-dark-bg.svg" alt="Bitáco" class="h-7 w-auto" />
+        <div class="flex flex-wrap gap-x-6 gap-y-2 text-sm">
+          <a href={`/${lang}/privacidad`}>{t('footer.privacidad')}</a>
+          <a href={`/${lang}/terminos`}>{t('footer.terminos')}</a>
+          <a href={`/${lang}/soporte`}>{t('footer.soporte')}</a>
+        </div>
+        <p class="text-xs text-brand-cream/60 text-center md:text-right">
+          © {new Date().getFullYear()} Bitáco. {t('footer.rights')}
+          <br />
+          {t('footer.credit')}{' '}
+          <a href="https://fxckthead.com" target="_blank" rel="noopener" class="underline hover:text-brand-cream">
+            fxckthead.com
+          </a>
+        </p>
+      </div>
+    </footer>
+  </body>
+</html>

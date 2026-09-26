@@ -1,0 +1,11 @@
+{
+  "applinks": {
+    "apps": [],
+    "details": [
+      {
+        "appID": "TODO_TEAMID.com.TODO.bitaco",
+        "paths": ["/es/logro/*", "/en/logro/*", "/es/p/*", "/en/p/*"]
+      }
+    ]
+  }
+}

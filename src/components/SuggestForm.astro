@@ -1,0 +1,136 @@
+---
+import { type Lang, useTranslations } from '../i18n/ui';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+
+const categorias = [
+  t('suggest.categoria.comida'),
+  t('suggest.categoria.lugar'),
+  t('suggest.categoria.plan'),
+  t('suggest.categoria.licor'),
+  t('suggest.categoria.cerca'),
+  t('suggest.categoria.costumbre'),
+  t('suggest.categoria.internacional'),
+  t('suggest.categoria.otro'),
+];
+---
+
+<div class="group block rounded-3xl bg-white shadow-md hover:shadow-2xl transition-shadow duration-300 p-6 md:p-8">
+  <h3 class="font-display font-bold text-xl mb-2 text-balance">{t('suggest.title')}</h3>
+  <p class="text-brand-bg/60 text-sm mb-5">{t('suggest.subtitle')}</p>
+
+  <form id="suggest-form" class="flex flex-col gap-3 text-left">
+    <div>
+      <label for="s-categoria" class="block text-xs font-bold mb-1">{t('suggest.categoria')}</label>
+      <select
+        id="s-categoria"
+        required
+        class="w-full text-sm border border-black/10 rounded-lg px-3 py-2 bg-white focus:outline-none focus:border-brand-accent"
+      >
+        <option value="" disabled selected>{t('suggest.categoria.placeholder')}</option>
+        {categorias.map((c) => <option value={c}>{c}</option>)}
+      </select>
+    </div>
+
+    <div>
+      <label for="s-sitio" class="block text-xs font-bold mb-1">
+        {t('suggest.sitio')} <span class="font-normal text-brand-bg/50">{t('suggest.sitio.opcional')}</span>
+      </label>
+      <input
+        id="s-sitio"
+        type="text"
+        placeholder={t('suggest.sitio.placeholder')}
+        class="w-full text-sm border border-black/10 rounded-lg px-3 py-2 focus:outline-none focus:border-brand-accent"
+      />
+    </div>
+
+    <div>
+      <label for="s-contacto" class="block text-xs font-bold mb-1">
+        {t('suggest.contacto')} <span class="font-normal text-brand-bg/50">{t('suggest.contacto.opcional')}</span>
+      </label>
+      <input
+        id="s-contacto"
+        type="text"
+        placeholder={t('suggest.contacto.placeholder')}
+        class="w-full text-sm border border-black/10 rounded-lg px-3 py-2 focus:outline-none focus:border-brand-accent"
+      />
+    </div>
+
+    <div>
+      <label for="s-descripcion" class="block text-xs font-bold mb-1">{t('suggest.descripcion')}</label>
+      <textarea
+        id="s-descripcion"
+        required
+        placeholder={t('suggest.descripcion.placeholder')}
+        rows="3"
+        class="w-full text-sm border border-black/10 rounded-lg px-3 py-2 resize-none focus:outline-none focus:border-brand-accent"
+      ></textarea>
+    </div>
+
+    <button
+      type="submit"
+      class="font-display bg-brand-accent text-white text-sm font-bold px-5 py-2.5 rounded-full mt-1 disabled:opacity-60"
+    >
+      {t('suggest.submit')}
+    </button>
+    <p id="suggest-msg" class="text-sm font-semibold min-h-[1.25rem]"></p>
+  </form>
+</div>
+
+<script define:vars={{ okMsg: t('suggest.ok'), errMsg: t('suggest.err') }}>
+  // Mismo backend real que ya usa la landing temporal de fxckthead.com —
+  // tabla pública sugerencias_comunidad en Supabase, protegida por RLS del
+  // lado del servidor (la anon key es pública a propósito, así funciona
+  // Supabase).
+  const SUPABASE_URL = 'https://pemrhvijfsttcaahzxiy.supabase.co';
+  const SUPABASE_ANON_KEY =
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBlbXJodmlqZnN0dGNhYWh6eGl5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODgxNjQxNDYsImV4cCI6MjEwMzc0MDE0Nn0.Zk95krnDMQM4-AVOnPCEawefWN9eh1MrgG-EKzn1_zs';
+
+  const form = document.getElementById('suggest-form');
+  const msg = document.getElementById('suggest-msg');
+
+  form?.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const submitBtn = form.querySelector('button[type="submit"]');
+    const categoria = document.getElementById('s-categoria').value;
+    const descripcion = document.getElementById('s-descripcion').value.trim();
+    if (!categoria || !descripcion) return;
+
+    submitBtn.disabled = true;
+    msg.textContent = '';
+    msg.className = 'text-sm font-semibold min-h-[1.25rem]';
+
+    fetch(`${SUPABASE_URL}/rest/v1/sugerencias_comunidad`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        apikey: SUPABASE_ANON_KEY,
+        Authorization: `Bearer ${SUPABASE_ANON_KEY}`,
+      },
+      body: JSON.stringify({
+        categoria,
+        sitio_especifico: document.getElementById('s-sitio').value.trim() || null,
+        punto_contacto: document.getElementById('s-contacto').value.trim() || null,
+        descripcion,
+      }),
+    })
+      .then((res) => {
+        if (!res.ok) throw new Error('request failed');
+        form.reset();
+        msg.textContent = okMsg;
+        msg.className = 'text-sm font-semibold min-h-[1.25rem] text-emerald-700';
+      })
+      .catch(() => {
+        msg.textContent = errMsg;
+        msg.className = 'text-sm font-semibold min-h-[1.25rem] text-red-700';
+      })
+      .finally(() => {
+        submitBtn.disabled = false;
+      });
+  });
+</script>

@@ -1,0 +1,152 @@
+@import "tailwindcss";
+
+/* Fuentes (Fraunces + Manrope) se cargan por <link> en Layout.astro, no por
+   @import aquí — un @import después de "tailwindcss" rompe el orden que
+   exige CSS (@import debe ir primero) una vez que Tailwind expande su
+   propio contenido durante el build. */
+
+/* Paleta de marca real de la app (DASHBOARD_COLORS en src/theme.ts) —
+   mismos nombres/valores para que el sitio se sienta la misma marca. */
+@theme {
+  --font-display: 'Fraunces', serif;
+  --font-body: 'Manrope', sans-serif;
+
+  --color-brand-bg: #0B1D3A;
+  --color-brand-accent: #E8792C;
+  --color-brand-gold: #D9A441;
+  --color-brand-cream: #F5F1E8;
+  /* Negro real del logo (fill oscuro en logo_bitaco_AF-05.svg) — usado para
+     superficies oscuras (footer) en vez del azul del dashboard, que no es
+     un color de marca sino un fondo temporal de una sola pantalla. */
+  --color-brand-ink: #191919;
+}
+
+body {
+  font-family: var(--font-body);
+  background-color: var(--color-brand-cream);
+  color: var(--color-brand-bg);
+  overflow-x: hidden;
+}
+
+/* Textura real de la app (src/assets/generic/app_background.webp) — el
+   fondo de pergamino con animalitos grabados que aparece en cada pantalla
+   clara de la app. La imagen original no es un tile perfecto (repetirla tal
+   cual dejaba una costura visible, con la cola del alebrije "duplicada").
+   parchment-mirrored.webp es un tile 2x2 armado espejando la imagen en
+   ambos ejes (ver scratchpad), así cada borde conecta con su propio
+   reflejo y la repetición se ve continua. */
+.texture-parchment {
+  background-color: var(--color-brand-cream);
+  background-image: url('/brand/textures/parchment-mirrored.webp');
+  background-size: 1700px auto;
+  background-repeat: repeat;
+}
+
+h1, h2, h3, h4, .font-display {
+  font-family: var(--font-display);
+}
+
+/* Mockup de celular genérico (mismo patrón ya usado en la landing temporal
+   de fxckthead.com) — envuelve un screenshot real de la app en un marco
+   con bisel, botones laterales y notch, sin imitar ningún modelo de
+   celular registrado en particular. */
+.phone {
+  width: min(220px, 30vh);
+  aspect-ratio: 9 / 19.3;
+  background: linear-gradient(160deg, #2b2723, #141210);
+  border-radius: 38px;
+  padding: 9px;
+  box-shadow: 0 24px 48px -18px rgba(11, 29, 58, 0.35), 0 4px 14px rgba(11, 29, 58, 0.18);
+  position: relative;
+  flex-shrink: 0;
+}
+.phone .btn { position: absolute; background: #1c1a17; }
+.phone .btn.power { right: -3px; top: 90px; width: 3px; height: 56px; border-radius: 0 3px 3px 0; }
+.phone .btn.vol1 { left: -3px; top: 75px; width: 3px; height: 26px; border-radius: 3px 0 0 3px; }
+.phone .btn.vol2 { left: -3px; top: 110px; width: 3px; height: 42px; border-radius: 3px 0 0 3px; }
+.phone .screen {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: 28px;
+  overflow: hidden;
+  background: #fff;
+}
+.phone .screen img { width: 100%; height: 100%; object-fit: cover; object-position: top center; display: block; }
+.phone .notch {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 38%;
+  height: 18px;
+  background: #141210;
+  border-radius: 0 0 12px 12px;
+  z-index: 3;
+}
+.phone.phone-sm { width: min(150px, 22vh); }
+
+/* Sellos de título reales (src/assets/titles/*.webp) usados como stickers
+   de collage flotando alrededor del teléfono — un guiño directo a "el
+   pasaporte se llena de sellos" desde el primer scroll. */
+@keyframes seal-float {
+  0%, 100% { transform: translateY(0) rotate(var(--seal-rot, 0deg)); }
+  50% { transform: translateY(-10px) rotate(var(--seal-rot, 0deg)); }
+}
+.seal-float { animation: seal-float 5s ease-in-out infinite; }
+.seal-float-slow { animation: seal-float 7s ease-in-out infinite; animation-delay: -2s; }
+
+/* Matasellos numerado para la sección "Cómo funciona" — círculo punteado
+   estilo timbre postal, en vez de un simple círculo numerado plano. */
+.postmark {
+  width: 44px;
+  height: 44px;
+  border-radius: 9999px;
+  border: 2px dashed var(--color-brand-accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-display);
+  font-weight: 700;
+  color: var(--color-brand-accent);
+  background: var(--color-brand-cream);
+  margin-left: auto;
+  margin-right: auto;
+  position: relative;
+  z-index: 2;
+}
+
+/* Sellos que entran, se quedan estampados un rato y vuelven a salir, en
+   loop infinito — como si el pasaporte se fuera llenando solo. Cada sello
+   define su propio punto de partida (--ox/--oy) y rotación final
+   (--seal-rot) vía variables inline, para que un solo keyframe sirva para
+   todos sin repetir código por sello. */
+@keyframes stamp-loop {
+  0%, 100% {
+    transform: translate(var(--ox, 0), var(--oy, -80px)) rotate(calc(var(--seal-rot, 0deg) * 2.4));
+    opacity: 0;
+  }
+  15%, 75% {
+    transform: translate(0, 0) rotate(var(--seal-rot, 0deg));
+    opacity: 1;
+  }
+  90% {
+    transform: translate(var(--ox, 0), var(--oy, -80px)) rotate(calc(var(--seal-rot, 0deg) * 2.4));
+    opacity: 0;
+  }
+}
+.stamp-loop {
+  animation: stamp-loop 7.5s ease-in-out infinite;
+}
+
+/* Franja de colores de las 8 categorías reales (CATEGORY_COLORS en
+   src/theme.ts) — mismo patrón ya usado como firma visual en la landing
+   temporal de fxckthead.com. */
+.category-stripe {
+  height: 6px;
+  border-radius: 6px;
+  background: linear-gradient(90deg,
+    #3355B5 0 12.5%, #C9962A 12.5% 25%, #7B4FB5 25% 37.5%, #C0392B 37.5% 50%,
+    #C93B8E 50% 62.5%, #2C8FA6 62.5% 75%, #1F5C3F 75% 87.5%, #E2652B 87.5% 100%);
+  opacity: 0.85;
+}

@@ -1,0 +1,22 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { type Lang } from '../i18n/ui';
+
+interface Props {
+  lang: Lang;
+  title: string;
+  nota: string;
+}
+
+const { lang, title, nota } = Astro.props;
+---
+
+<!-- TODO: página placeholder — reemplazar con contenido real antes de publicar. -->
+<Layout lang={lang} title={`${title} — Bitáco`} description={title} noindex>
+  <div class="mx-auto max-w-3xl px-4 py-20">
+    <h1 class="font-display font-bold text-3xl mb-4">{title}</h1>
+    <p class="text-brand-bg/60 bg-brand-gold/10 border border-brand-gold/30 rounded-xl px-4 py-3 text-sm">
+      TODO — {nota}
+    </p>
+  </div>
+</Layout>

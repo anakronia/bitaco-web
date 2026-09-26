@@ -1,0 +1,297 @@
+---
+import Layout from '../layouts/Layout.astro';
+import SuggestForm from './SuggestForm.astro';
+import { type Lang, useTranslations } from '../i18n/ui';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+
+// Categorías reales mostradas en el home — solo ícono + nombre corto, sin
+// descripción, para dar amplitud de contenido (bueno para SEO e interés)
+// sin alargar la página. Las 8 principales primero, luego una muestra de
+// las "mini" (gustos específicos) y la temporal.
+const categoriasPrincipales = [
+  { id: 'echate-un-taco', nombre_es: 'Échate un taco', nombre_en: 'Grab a taco' },
+  { id: 'sabores-cdmx', nombre_es: 'Sabores de CDMX', nombre_en: 'Flavors of CDMX' },
+  { id: 'salucita', nombre_es: 'Salucita', nombre_en: 'Cheers' },
+  { id: 'aqui-mero', nombre_es: 'Aquí mero', nombre_en: 'Right here' },
+  { id: 'que-cultura', nombre_es: '¡Qué cultura!', nombre_en: 'Culture!' },
+  { id: 'que-plan', nombre_es: '¿Qué plan?', nombre_en: "What's the plan?" },
+  { id: 'sonidos-chilangos', nombre_es: 'Sonidos chilangos', nombre_en: 'Chilango sounds' },
+  { id: 'escape-cdmx', nombre_es: 'Escape CDMX', nombre_en: 'Escape CDMX' },
+];
+
+const categoriasEspeciales = [
+  { id: 'museologia', nombre_es: 'Museología', nombre_en: 'Museums' },
+  { id: 'bella-cdmx', nombre_es: 'Bella CDMX', nombre_en: 'Beautiful CDMX' },
+  { id: 'de-rama-en-rama', nombre_es: 'De Rama en Rama', nombre_en: 'From Branch to Branch' },
+  { id: 'a-sudar-se-dijo', nombre_es: 'A Sudar Se Dijo', nombre_en: 'Time to Sweat' },
+  { id: 'paladares-exoticos', nombre_es: 'Paladares Exóticos', nombre_en: 'Exotic Palates' },
+  { id: 'la-capi', nombre_es: 'La capi', nombre_en: 'La Capi' },
+  { id: 'que-onda-alterna', nombre_es: 'Que onda alterna', nombre_en: 'Alternative Vibes' },
+  { id: 'de-pasada', nombre_es: 'De pasada', nombre_en: 'Passing By' },
+];
+
+// Sellos reales (títulos ilustrados de la app) usados como elementos de
+// collage decorativo en el hero y la sección de pasaporte — no son
+// genéricos, son arte real que ya existe en la app.
+const sellosHero = ['chilango-ahuevo', 'echate-un-taco', 'sabores-cdmx'];
+
+// Pasaporte: mezcla de sellos de título (círculos, /brand/seals) y sellos
+// de logros individuales (rectángulos tipo timbre postal, /brand/seals-logros)
+// para que se lea como una colección real, no solo una categoría.
+const titulosPasaporte = ['salucita', 'museologia', 'escape-cdmx'];
+const logrosPasaporte = ['taco-pastor', 'taco-suadero', 'mezcalita', 'angel-independencia', 'carajillo'];
+
+const bannerQuiz = lang === 'es' ? 'quiz-chilango.webp' : 'quiz-chilango-en.webp';
+const btnPlan = lang === 'es' ? 'btn-mi-plan-cdmx.webp' : 'btn-mi-plan-cdmx-en.webp';
+
+const rotaciones = ['-rotate-2', 'rotate-1', '-rotate-1', 'rotate-2', 'rotate-1', '-rotate-2', 'rotate-2', '-rotate-1'];
+---
+
+<Layout
+  lang={lang}
+  title={lang === 'es' ? 'Bitáco — Retos y logros por la Ciudad de México' : 'Bitáco — CDMX Challenges & Achievements'}
+  description={t('hero.subtitle')}
+>
+  <!-- Hero -->
+  <section class="relative overflow-hidden texture-parchment">
+    <div class="mx-auto max-w-6xl px-4 py-16 md:py-24">
+      <div class="grid md:grid-cols-2 gap-12 md:gap-8 items-center">
+        <div class="relative z-10 text-center md:text-left">
+          <p class="uppercase tracking-widest text-brand-accent font-bold text-sm mb-4">{t('hero.kicker')}</p>
+          <h1 class="font-display font-black text-4xl md:text-5xl leading-tight mb-6 text-balance">
+            {t('hero.title')}
+          </h1>
+          <p class="text-lg text-brand-bg/75 max-w-xl mx-auto md:mx-0 mb-3">{t('hero.subtitle')}</p>
+          <p class="font-display italic font-semibold text-xl text-brand-accent mb-6">{t('hero.tagline')}</p>
+          <span class="font-display inline-block bg-brand-gold text-brand-bg font-bold text-sm px-3 py-1 rounded-full mb-8">
+            {t('hero.free')}
+          </span>
+
+          <div id="descargar" class="flex flex-col items-center md:items-start gap-3">
+            <!-- Badges oficiales de Apple/Google, atenuados y no clicables —
+                 la app todavía no está publicada (ver hero.comingSoon). Quitar
+                 opacity-60/pointer-events-none y envolver en <a> en cuanto
+                 existan los links reales de las tiendas. -->
+            <div class="flex flex-col sm:flex-row gap-3 opacity-60 pointer-events-none">
+              <img
+                src={`/brand/badges/apple-${lang}.svg`}
+                alt={t('hero.cta.appstore')}
+                class="h-11 w-auto"
+              />
+              <img
+                src={`/brand/badges/google-play-${lang}.png`}
+                alt={t('hero.cta.googleplay')}
+                class="h-11 w-auto"
+              />
+            </div>
+            <p class="text-xs text-brand-bg/50">{t('hero.comingSoon')}</p>
+          </div>
+        </div>
+
+        <div class="relative flex justify-center py-6">
+          <div class="relative w-[220px] sm:w-[240px]">
+            <img
+              src={`/brand/seals/${sellosHero[0]}.webp`}
+              alt=""
+              class="seal-float absolute -top-10 -left-14 w-20 sm:w-24 -rotate-[14deg] drop-shadow-xl select-none pointer-events-none"
+            />
+            <img
+              src={`/brand/seals/${sellosHero[1]}.webp`}
+              alt=""
+              class="seal-float-slow absolute top-6 -right-12 sm:-right-16 w-16 sm:w-20 rotate-[12deg] drop-shadow-xl select-none pointer-events-none"
+            />
+            <img
+              src={`/brand/seals/${sellosHero[2]}.webp`}
+              alt=""
+              class="seal-float absolute -bottom-8 -left-8 sm:-left-12 w-16 sm:w-20 rotate-[8deg] drop-shadow-xl select-none pointer-events-none"
+            />
+            <div class="phone mx-auto">
+              <div class="notch"></div>
+              <div class="btn power"></div>
+              <div class="btn vol1"></div>
+              <div class="btn vol2"></div>
+              <div class="screen"><img src="/app-shots/01_index.png" alt="Bitáco" /></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="category-stripe max-w-md mx-auto"></div>
+
+  <!-- Cómo funciona -->
+  <section class="mx-auto max-w-6xl px-4 py-16 md:py-20">
+    <h2 class="font-display font-bold text-3xl md:text-4xl text-center mb-4">{t('how.title')}</h2>
+    <div class="relative grid md:grid-cols-3 gap-x-6 gap-y-14 mt-12">
+      <div class="hidden md:block absolute top-[100px] left-[18%] right-[18%] border-t-2 border-dashed border-brand-accent/30"></div>
+
+      <div class="relative text-center">
+        <div class="phone phone-sm mx-auto -rotate-3">
+          <div class="notch"></div>
+          <div class="screen"><img src="/app-shots/02_categorias.png" alt={t('how.step1.title')} /></div>
+        </div>
+        <div class="postmark -mt-5">1</div>
+        <h3 class="font-display font-semibold text-xl mt-3 mb-1">{t('how.step1.title')}</h3>
+        <p class="text-brand-bg/70">{t('how.step1.body')}</p>
+      </div>
+
+      <div class="relative text-center md:mt-10">
+        <div class="phone phone-sm mx-auto rotate-2">
+          <div class="notch"></div>
+          <div class="screen"><img src="/app-shots/03_logro_cumplido.png" alt={t('how.step2.title')} /></div>
+        </div>
+        <div class="postmark -mt-5">2</div>
+        <h3 class="font-display font-semibold text-xl mt-3 mb-1">{t('how.step2.title')}</h3>
+        <p class="text-brand-bg/70">{t('how.step2.body')}</p>
+      </div>
+
+      <div class="relative text-center">
+        <div class="phone phone-sm mx-auto -rotate-2">
+          <div class="notch"></div>
+          <div class="screen"><img src="/app-shots/06_titulo.png" alt={t('how.step3.title')} /></div>
+        </div>
+        <div class="postmark -mt-5">3</div>
+        <h3 class="font-display font-semibold text-xl mt-3 mb-1">{t('how.step3.title')}</h3>
+        <p class="text-brand-bg/70">{t('how.step3.body')}</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Pasaporte -->
+  <section id="pasaporte" class="relative texture-parchment overflow-hidden py-24 md:py-32">
+    <div class="mx-auto max-w-6xl px-4 grid md:grid-cols-2 gap-20 items-center">
+      <div class="relative flex justify-center order-2 md:order-1">
+        <div class="relative w-[300px] sm:w-80 md:w-96">
+          <img
+            src="/brand/textures/passport.webp"
+            alt="Pasaporte de Bitáco"
+            class="w-full rounded-xl shadow-2xl -rotate-3 border-4 border-white"
+          />
+
+          <!-- Sellos de título (círculos) y de logros individuales (timbres
+               rectangulares) — animación en loop infinito: entran desde
+               afuera del pasaporte y ATERRIZAN encima de la foto (posición
+               en % del propio contenedor, no pegados al borde), se quedan
+               estampados un rato y vuelven a salir por donde entraron. -->
+          <img src={`/brand/seals-logros/${logrosPasaporte[0]}.webp`} alt=""
+            style="--seal-rot:-8deg; --ox:-100px; --oy:-100px; animation-delay:0s; top:8%; left:8%;"
+            class="stamp-loop absolute w-20 sm:w-24 drop-shadow-xl select-none pointer-events-none" />
+          <img src={`/brand/seals-logros/${logrosPasaporte[4]}.webp`} alt=""
+            style="--seal-rot:-4deg; --ox:0px; --oy:-140px; animation-delay:-6.2s; top:4%; left:38%;"
+            class="stamp-loop absolute w-20 drop-shadow-xl select-none pointer-events-none" />
+          <img src={`/brand/seals/${titulosPasaporte[0]}.webp`} alt=""
+            style="--seal-rot:10deg; --ox:110px; --oy:-100px; animation-delay:-0.5s; top:8%; left:66%;"
+            class="stamp-loop absolute w-20 sm:w-24 drop-shadow-xl select-none pointer-events-none" />
+          <img src={`/brand/seals/${titulosPasaporte[1]}.webp`} alt=""
+            style="--seal-rot:-12deg; --ox:-140px; --oy:-60px; animation-delay:-2.3s; top:32%; left:30%;"
+            class="stamp-loop absolute w-20 sm:w-24 drop-shadow-xl select-none pointer-events-none" />
+          <img src={`/brand/seals-logros/${logrosPasaporte[2]}.webp`} alt=""
+            style="--seal-rot:14deg; --ox:140px; --oy:-40px; animation-delay:-3.2s; top:34%; left:58%;"
+            class="stamp-loop absolute w-20 sm:w-24 drop-shadow-xl select-none pointer-events-none" />
+          <img src={`/brand/seals-logros/${logrosPasaporte[3]}.webp`} alt=""
+            style="--seal-rot:-5deg; --ox:-130px; --oy:40px; animation-delay:-5.4s; top:56%; left:14%;"
+            class="stamp-loop absolute w-20 drop-shadow-xl select-none pointer-events-none" />
+          <img src={`/brand/seals/${titulosPasaporte[2]}.webp`} alt=""
+            style="--seal-rot:6deg; --ox:130px; --oy:60px; animation-delay:-4.1s; top:52%; left:64%;"
+            class="stamp-loop absolute w-20 sm:w-24 drop-shadow-xl select-none pointer-events-none" />
+          <img src={`/brand/seals-logros/${logrosPasaporte[1]}.webp`} alt=""
+            style="--seal-rot:9deg; --ox:0px; --oy:160px; animation-delay:-1.7s; top:70%; left:40%;"
+            class="stamp-loop absolute w-20 sm:w-24 drop-shadow-xl select-none pointer-events-none" />
+        </div>
+      </div>
+      <div class="text-center md:text-left order-1 md:order-2">
+        <p class="uppercase tracking-widest text-brand-accent font-bold text-sm mb-3">{t('passport.kicker')}</p>
+        <h2 class="font-display font-bold text-3xl md:text-4xl mb-4 text-balance">{t('passport.title')}</h2>
+        <p class="text-brand-bg/75 text-lg mb-8">{t('passport.body')}</p>
+        <div class="flex justify-center md:justify-start gap-10">
+          <div>
+            <p class="font-display font-black text-4xl text-brand-accent">271</p>
+            <p class="text-sm text-brand-bg/60">{t('passport.stat1')}</p>
+          </div>
+          <div>
+            <p class="font-display font-black text-4xl text-brand-accent">73</p>
+            <p class="text-sm text-brand-bg/60">{t('passport.stat2')}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Categorías -->
+  <section class="bg-black/[0.02] py-16 md:py-24">
+    <div class="mx-auto max-w-6xl px-4">
+      <h2 class="font-display font-bold text-3xl md:text-4xl text-center mb-2">{t('categories.title')}</h2>
+      <p class="text-center text-brand-bg/60 mb-3">{t('categories.subtitle')}</p>
+      <div class="category-stripe max-w-xs mx-auto mb-12"></div>
+
+      <div class="grid grid-cols-4 md:grid-cols-8 gap-3 md:gap-4 mb-4 md:mb-5">
+        {categoriasPrincipales.map((c, i) => (
+          <div class={`group flex flex-col items-center gap-1.5 text-center bg-white/80 rounded-2xl px-2 py-3 shadow-sm hover:shadow-lg hover:-translate-y-1 hover:rotate-0 transition-all duration-200 ${rotaciones[i % rotaciones.length]}`}>
+            <img
+              src={`/categories/${c.id}.webp`}
+              alt=""
+              class="w-10 h-10 md:w-12 md:h-12 group-hover:scale-110 transition-transform duration-200"
+              loading="lazy"
+            />
+            <span class="text-[11px] md:text-xs font-semibold leading-tight">{lang === 'es' ? c.nombre_es : c.nombre_en}</span>
+          </div>
+        ))}
+      </div>
+
+      <div class="grid grid-cols-4 md:grid-cols-8 gap-3 md:gap-4">
+        {categoriasEspeciales.map((c, i) => (
+          <div class={`group flex flex-col items-center gap-1.5 text-center bg-white/80 rounded-2xl px-2 py-3 shadow-sm hover:shadow-lg hover:-translate-y-1 hover:rotate-0 transition-all duration-200 ${rotaciones[(i + 3) % rotaciones.length]}`}>
+            <img
+              src={`/categories/${c.id}.webp`}
+              alt=""
+              class="w-10 h-10 md:w-12 md:h-12 group-hover:scale-110 transition-transform duration-200"
+              loading="lazy"
+            />
+            <span class="text-[11px] md:text-xs font-semibold leading-tight">{lang === 'es' ? c.nombre_es : c.nombre_en}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Quiz + Plan + Sugerencias -->
+  <section class="mx-auto max-w-6xl px-4 py-16 md:py-24 grid md:grid-cols-3 gap-8 items-start">
+    <a href={`/${lang}/quiz`} class="group block rounded-3xl bg-white shadow-md hover:shadow-2xl transition-shadow duration-300 p-6 md:p-8 text-center overflow-hidden">
+      <img
+        src={`/brand/banners/${bannerQuiz}`}
+        alt={t('hero.kicker')}
+        class="w-full max-w-sm mx-auto mb-5 -rotate-2 group-hover:rotate-0 transition-transform duration-300 drop-shadow-md"
+      />
+      <p class="text-brand-bg/70 mb-6">{t('quiz.subtitle')}</p>
+      <span class="font-display inline-block bg-brand-accent text-white text-sm font-bold px-5 py-2.5 rounded-full">{t('quiz.cta')}</span>
+    </a>
+    <a href={`/${lang}/plan`} class="group block rounded-3xl bg-white shadow-md hover:shadow-2xl transition-shadow duration-300 p-6 md:p-8 text-center flex flex-col items-center justify-center overflow-hidden">
+      <h3 class="font-display font-bold text-2xl mb-2 uppercase tracking-tight">{t('plan.title')}</h3>
+      <p class="text-brand-bg/60 mb-5">{t('plan.subtitle')}</p>
+      <img
+        src={`/brand/banners/${btnPlan}`}
+        alt={t('plan.title')}
+        class="w-full max-w-[220px] mx-auto mb-6 rotate-2 group-hover:rotate-0 transition-transform duration-300 drop-shadow-md"
+      />
+      <span class="font-display inline-block bg-brand-ink text-white text-sm font-bold px-5 py-2.5 rounded-full">{t('plan.cta')}</span>
+    </a>
+    <SuggestForm lang={lang} />
+  </section>
+
+  <script type="application/ld+json" set:html={JSON.stringify({
+    '@context': 'https://schema.org',
+    '@type': 'MobileApplication',
+    name: 'Bitáco',
+    operatingSystem: 'iOS, Android',
+    applicationCategory: 'TravelApplication',
+    offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
+    description: t('hero.subtitle'),
+  })} />
+</Layout>
