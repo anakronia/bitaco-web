@@ -11,9 +11,9 @@ export default defineConfig({
 
   i18n: {
     defaultLocale: 'es',
-    locales: ['es', 'en'],
-    // Prefijo explícito en AMBOS idiomas (/es/... y /en/...) — sin esto,
-    // Astro deja el default (es) sin prefijo, pero para hreflang/SEO
+    locales: ['es', 'en', 'fr', 'de', 'pt'],
+    // Prefijo explícito en TODOS los idiomas (/es/..., /en/..., etc.) — sin
+    // esto, Astro deja el default (es) sin prefijo, pero para hreflang/SEO
     // programático conviene tener rutas simétricas.
     routing: { prefixDefaultLocale: true },
   },

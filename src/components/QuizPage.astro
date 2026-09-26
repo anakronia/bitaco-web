@@ -1,7 +1,23 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import { type Lang, useTranslations } from '../i18n/ui';
-import { QUIZ_ES, QUIZ_EN, QUIZ_TIERS_ES, QUIZ_TIERS_EN, QUIZ_TITLE_ES, QUIZ_TITLE_EN } from '../data/chilangoQuiz';
+import {
+  QUIZ_ES,
+  QUIZ_EN,
+  QUIZ_FR,
+  QUIZ_DE,
+  QUIZ_PT,
+  QUIZ_TIERS_ES,
+  QUIZ_TIERS_EN,
+  QUIZ_TIERS_FR,
+  QUIZ_TIERS_DE,
+  QUIZ_TIERS_PT,
+  QUIZ_TITLE_ES,
+  QUIZ_TITLE_EN,
+  QUIZ_TITLE_FR,
+  QUIZ_TITLE_DE,
+  QUIZ_TITLE_PT,
+} from '../data/chilangoQuiz';
 
 interface Props {
   lang: Lang;
@@ -10,9 +26,16 @@ interface Props {
 const { lang } = Astro.props;
 const t = useTranslations(lang);
 
-const questions = lang === 'es' ? QUIZ_ES : QUIZ_EN;
-const tiers = lang === 'es' ? QUIZ_TIERS_ES : QUIZ_TIERS_EN;
-const title = lang === 'es' ? QUIZ_TITLE_ES : QUIZ_TITLE_EN;
+const questionsByLang = { es: QUIZ_ES, en: QUIZ_EN, fr: QUIZ_FR, de: QUIZ_DE, pt: QUIZ_PT };
+const tiersByLang = { es: QUIZ_TIERS_ES, en: QUIZ_TIERS_EN, fr: QUIZ_TIERS_FR, de: QUIZ_TIERS_DE, pt: QUIZ_TIERS_PT };
+const titleByLang = { es: QUIZ_TITLE_ES, en: QUIZ_TITLE_EN, fr: QUIZ_TITLE_FR, de: QUIZ_TITLE_DE, pt: QUIZ_TITLE_PT };
+
+const questions = questionsByLang[lang];
+const tiers = tiersByLang[lang];
+const title = titleByLang[lang];
+// No hay banner ilustrado propio en FR/DE/PT (solo existe ES/EN en la
+// app) — se usa el de EN como respaldo, más legible que el de ES para
+// quien no habla español.
 const bannerQuiz = lang === 'es' ? 'quiz-chilango.webp' : 'quiz-chilango-en.webp';
 ---
 

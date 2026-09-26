@@ -15,26 +15,28 @@ const t = useTranslations(lang);
 // sin alargar la página. Las 8 principales primero, luego una muestra de
 // las "mini" (gustos específicos) y la temporal.
 const categoriasPrincipales = [
-  { id: 'echate-un-taco', nombre_es: 'Échate un taco', nombre_en: 'Grab a taco' },
-  { id: 'sabores-cdmx', nombre_es: 'Sabores de CDMX', nombre_en: 'Flavors of CDMX' },
-  { id: 'salucita', nombre_es: 'Salucita', nombre_en: 'Cheers' },
-  { id: 'aqui-mero', nombre_es: 'Aquí mero', nombre_en: 'Right here' },
-  { id: 'que-cultura', nombre_es: '¡Qué cultura!', nombre_en: 'Culture!' },
-  { id: 'que-plan', nombre_es: '¿Qué plan?', nombre_en: "What's the plan?" },
-  { id: 'sonidos-chilangos', nombre_es: 'Sonidos chilangos', nombre_en: 'Chilango sounds' },
-  { id: 'escape-cdmx', nombre_es: 'Escape CDMX', nombre_en: 'Escape CDMX' },
+  { id: 'echate-un-taco', nombre_es: 'Échate un taco', nombre_en: 'Grab a taco', nombre_fr: 'Croque un taco', nombre_de: "Schnapp dir 'nen Taco", nombre_pt: 'Vai de taco' },
+  { id: 'sabores-cdmx', nombre_es: 'Sabores de CDMX', nombre_en: 'Flavors of CDMX', nombre_fr: 'Saveurs de CDMX', nombre_de: 'Aromen von CDMX', nombre_pt: 'Sabores da CDMX' },
+  { id: 'salucita', nombre_es: 'Salucita', nombre_en: 'Cheers', nombre_fr: 'Santé !', nombre_de: 'Prost!', nombre_pt: 'Saúde!' },
+  { id: 'aqui-mero', nombre_es: 'Aquí mero', nombre_en: 'Right here', nombre_fr: 'Ici même', nombre_de: 'Genau hier', nombre_pt: 'Bem aqui' },
+  { id: 'que-cultura', nombre_es: '¡Qué cultura!', nombre_en: 'Culture!', nombre_fr: 'Quelle culture !', nombre_de: 'Was für Kultur!', nombre_pt: 'Que cultura!' },
+  { id: 'que-plan', nombre_es: '¿Qué plan?', nombre_en: "What's the plan?", nombre_fr: 'Quel plan ?', nombre_de: 'Was geht?', nombre_pt: 'Que plano?' },
+  { id: 'sonidos-chilangos', nombre_es: 'Sonidos chilangos', nombre_en: 'Chilango sounds', nombre_fr: 'Sons chilangos', nombre_de: 'Chilango-Sounds', nombre_pt: 'Sons chilangos' },
+  { id: 'escape-cdmx', nombre_es: 'Escape CDMX', nombre_en: 'Escape CDMX', nombre_fr: 'Escape CDMX', nombre_de: 'Escape CDMX', nombre_pt: 'Escape CDMX' },
 ];
 
 const categoriasEspeciales = [
-  { id: 'museologia', nombre_es: 'Museología', nombre_en: 'Museums' },
-  { id: 'bella-cdmx', nombre_es: 'Bella CDMX', nombre_en: 'Beautiful CDMX' },
-  { id: 'de-rama-en-rama', nombre_es: 'De Rama en Rama', nombre_en: 'From Branch to Branch' },
-  { id: 'a-sudar-se-dijo', nombre_es: 'A Sudar Se Dijo', nombre_en: 'Time to Sweat' },
-  { id: 'paladares-exoticos', nombre_es: 'Paladares Exóticos', nombre_en: 'Exotic Palates' },
-  { id: 'la-capi', nombre_es: 'La capi', nombre_en: 'La Capi' },
-  { id: 'que-onda-alterna', nombre_es: 'Que onda alterna', nombre_en: 'Alternative Vibes' },
-  { id: 'de-pasada', nombre_es: 'De pasada', nombre_en: 'Passing By' },
+  { id: 'museologia', nombre_es: 'Museología', nombre_en: 'Museums', nombre_fr: 'Muséologie', nombre_de: 'Museologie', nombre_pt: 'Museologia' },
+  { id: 'bella-cdmx', nombre_es: 'Bella CDMX', nombre_en: 'Beautiful CDMX', nombre_fr: 'Bella CDMX', nombre_de: 'Bella CDMX', nombre_pt: 'Bella CDMX' },
+  { id: 'de-rama-en-rama', nombre_es: 'De Rama en Rama', nombre_en: 'From Branch to Branch', nombre_fr: 'De branche en branche', nombre_de: 'Von Ast zu Ast', nombre_pt: 'De galho em galho' },
+  { id: 'a-sudar-se-dijo', nombre_es: 'A Sudar Se Dijo', nombre_en: 'Time to Sweat', nombre_fr: 'On va suer', nombre_de: 'Zeit zu schwitzen', nombre_pt: 'Bora suar' },
+  { id: 'paladares-exoticos', nombre_es: 'Paladares Exóticos', nombre_en: 'Exotic Palates', nombre_fr: 'Palais exotiques', nombre_de: 'Exotische Gaumen', nombre_pt: 'Paladares Exóticos' },
+  { id: 'la-capi', nombre_es: 'La capi', nombre_en: 'La Capi', nombre_fr: 'La capi', nombre_de: 'La capi', nombre_pt: 'La capi' },
+  { id: 'que-onda-alterna', nombre_es: 'Que onda alterna', nombre_en: 'Alternative Vibes', nombre_fr: 'Ambiance alternative', nombre_de: 'Alternative Vibes', nombre_pt: 'Vibe alternativa' },
+  { id: 'de-pasada', nombre_es: 'De pasada', nombre_en: 'Passing By', nombre_fr: 'En passant', nombre_de: 'Im Vorbeigehen', nombre_pt: 'De passagem' },
 ];
+
+const nombrePorIdioma = (c: Record<string, string>, l: Lang) => c[`nombre_${l}`];
 
 // Sellos reales (títulos ilustrados de la app) usados como elementos de
 // collage decorativo en el hero y la sección de pasaporte — no son
@@ -47,15 +49,29 @@ const sellosHero = ['chilango-ahuevo', 'echate-un-taco', 'sabores-cdmx'];
 const titulosPasaporte = ['salucita', 'museologia', 'escape-cdmx'];
 const logrosPasaporte = ['taco-pastor', 'taco-suadero', 'mezcalita', 'angel-independencia', 'carajillo'];
 
+// No hay arte de banner/botón propio para FR/DE/PT (solo ES/EN existen en
+// la app) — el resto de idiomas usa el de EN como respaldo.
 const bannerQuiz = lang === 'es' ? 'quiz-chilango.webp' : 'quiz-chilango-en.webp';
 const btnPlan = lang === 'es' ? 'btn-mi-plan-cdmx.webp' : 'btn-mi-plan-cdmx-en.webp';
+// Los badges oficiales de Apple/Google solo existen en es/en — incluso
+// aunque hoy están deshabilitados (ver comentario más abajo), evita rutas
+// rotas para el resto de idiomas.
+const badgeLang = lang === 'es' ? 'es' : 'en';
+
+const titleByLang: Record<Lang, string> = {
+  es: 'Bitáco — Retos y logros por la Ciudad de México',
+  en: 'Bitáco — CDMX Challenges & Achievements',
+  fr: 'Bitáco — Défis et succès à Mexico',
+  de: 'Bitáco — Herausforderungen in Mexiko-Stadt',
+  pt: 'Bitáco — Desafios e conquistas na Cidade do México',
+};
 
 const rotaciones = ['-rotate-2', 'rotate-1', '-rotate-1', 'rotate-2', 'rotate-1', '-rotate-2', 'rotate-2', '-rotate-1'];
 ---
 
 <Layout
   lang={lang}
-  title={lang === 'es' ? 'Bitáco — Retos y logros por la Ciudad de México' : 'Bitáco — CDMX Challenges & Achievements'}
+  title={titleByLang[lang]}
   description={t('hero.subtitle')}
 >
   <!-- Hero -->
@@ -80,12 +96,12 @@ const rotaciones = ['-rotate-2', 'rotate-1', '-rotate-1', 'rotate-2', 'rotate-1'
                  existan los links reales de las tiendas. -->
             <div class="flex flex-col sm:flex-row gap-3 opacity-60 pointer-events-none">
               <img
-                src={`/brand/badges/apple-${lang}.svg`}
+                src={`/brand/badges/apple-${badgeLang}.svg`}
                 alt={t('hero.cta.appstore')}
                 class="h-11 w-auto"
               />
               <img
-                src={`/brand/badges/google-play-${lang}.png`}
+                src={`/brand/badges/google-play-${badgeLang}.png`}
                 alt={t('hero.cta.googleplay')}
                 class="h-11 w-auto"
               />
@@ -240,7 +256,7 @@ const rotaciones = ['-rotate-2', 'rotate-1', '-rotate-1', 'rotate-2', 'rotate-1'
               class="w-10 h-10 md:w-12 md:h-12 group-hover:scale-110 transition-transform duration-200"
               loading="lazy"
             />
-            <span class="text-[11px] md:text-xs font-semibold leading-tight">{lang === 'es' ? c.nombre_es : c.nombre_en}</span>
+            <span class="text-[11px] md:text-xs font-semibold leading-tight">{nombrePorIdioma(c, lang)}</span>
           </div>
         ))}
       </div>
@@ -254,7 +270,7 @@ const rotaciones = ['-rotate-2', 'rotate-1', '-rotate-1', 'rotate-2', 'rotate-1'
               class="w-10 h-10 md:w-12 md:h-12 group-hover:scale-110 transition-transform duration-200"
               loading="lazy"
             />
-            <span class="text-[11px] md:text-xs font-semibold leading-tight">{lang === 'es' ? c.nombre_es : c.nombre_en}</span>
+            <span class="text-[11px] md:text-xs font-semibold leading-tight">{nombrePorIdioma(c, lang)}</span>
           </div>
         ))}
       </div>

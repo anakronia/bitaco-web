@@ -1,6 +1,6 @@
 ---
 import '../styles/global.css';
-import { type Lang, useTranslations } from '../i18n/ui';
+import { type Lang, languages, useTranslations } from '../i18n/ui';
 
 interface Props {
   lang: Lang;
@@ -11,13 +11,27 @@ interface Props {
 
 const { lang, title, description, noindex = false } = Astro.props;
 const t = useTranslations(lang);
-const otherLang: Lang = lang === 'es' ? 'en' : 'es';
+const allLangs = Object.keys(languages) as Lang[];
 
-// Misma ruta, otro idioma — asume que toda página vive en /es/... o /en/...
-// (routing prefixDefaultLocale: true en astro.config.mjs), así que basta
-// con reemplazar el primer segmento de la URL actual.
+// Bandera de país por idioma (no de idioma per se — "inglés" no tiene
+// bandera propia, se usa la de EE.UU. como referencia más reconocible).
+const langFlags: Record<Lang, string> = {
+  es: '🇲🇽',
+  en: '🇺🇸',
+  fr: '🇫🇷',
+  de: '🇩🇪',
+  pt: '🇧🇷',
+};
+
+// Misma ruta, otro idioma — asume que toda página vive en /es/..., /en/...,
+// etc. (routing prefixDefaultLocale: true en astro.config.mjs), así que
+// basta con reemplazar el primer segmento de la URL actual.
 const currentPath = Astro.url.pathname;
-const altPath = currentPath.replace(`/${lang}`, `/${otherLang}`) || `/${otherLang}/`;
+const pathFor = (l: Lang) => currentPath.replace(`/${lang}`, `/${l}`) || `/${l}/`;
+
+// Privacidad y términos solo están traducidos a ES/EN — en FR/DE/PT
+// enlazan a la versión en inglés en vez de a una página inexistente.
+const legalLang: Lang = lang === 'es' || lang === 'en' ? lang : 'en';
 ---
 
 <!doctype html>
@@ -40,15 +54,17 @@ const altPath = currentPath.replace(`/${lang}`, `/${otherLang}`) || `/${otherLan
     {noindex && <meta name="robots" content="noindex, nofollow" />}
 
     <link rel="canonical" href={new URL(currentPath, Astro.site)} />
-    <link rel="alternate" hreflang={lang} href={new URL(currentPath, Astro.site)} />
-    <link rel="alternate" hreflang={otherLang} href={new URL(altPath, Astro.site)} />
-    <link rel="alternate" hreflang="x-default" href={new URL(currentPath.replace(`/${lang}`, '/es'), Astro.site)} />
+    {allLangs.map((l) => <link rel="alternate" hreflang={l} href={new URL(pathFor(l), Astro.site)} />)}
+    <link rel="alternate" hreflang="x-default" href={new URL(pathFor('es'), Astro.site)} />
 
     <!-- Open Graph -->
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:type" content="website" />
-    <meta property="og:locale" content={lang === 'es' ? 'es_MX' : 'en_US'} />
+    <meta
+      property="og:locale"
+      content={{ es: 'es_MX', en: 'en_US', fr: 'fr_FR', de: 'de_DE', pt: 'pt_BR' }[lang]}
+    />
 
     <!-- Smart App Banner (iOS) — actualizar apple-itunes-app cuando exista el ID real en App Store -->
     <!-- <meta name="apple-itunes-app" content="app-id=TODO" /> -->
@@ -63,7 +79,19 @@ const altPath = currentPath.replace(`/${lang}`, `/${otherLang}`) || `/${otherLan
           </span>
         </a>
         <div class="flex items-center gap-4">
-          <a href={altPath} class="text-sm font-semibold uppercase tracking-wide">{otherLang}</a>
+          <div class="relative">
+            <select
+              aria-label="Language"
+              class="appearance-none text-sm font-semibold uppercase tracking-wide bg-transparent border border-black/15 rounded-full pl-3 pr-7 py-1.5 cursor-pointer"
+              onchange="window.location.href = this.value"
+            >
+              {allLangs.map((l) => (
+                <option value={pathFor(l)} selected={l === lang}>
+                  {langFlags[l]} {l}
+                </option>
+              ))}
+            </select>
+          </div>
           <a
             href="#descargar"
             class="font-display rounded-full bg-brand-accent text-white text-sm font-bold px-4 py-2"
@@ -81,10 +109,13 @@ const altPath = currentPath.replace(`/${lang}`, `/${otherLang}`) || `/${otherLan
     <footer class="bg-brand-ink text-brand-cream">
       <div class="mx-auto max-w-6xl px-4 py-10 flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
         <img src="/brand/bitaco-logo-dark-bg.svg" alt="Bitáco" class="h-7 w-auto" />
-        <div class="flex flex-wrap gap-x-6 gap-y-2 text-sm">
-          <a href={`/${lang}/privacidad`}>{t('footer.privacidad')}</a>
-          <a href={`/${lang}/terminos`}>{t('footer.terminos')}</a>
-          <a href={`/${lang}/soporte`}>{t('footer.soporte')}</a>
+        <div class="flex flex-col gap-2">
+          <div class="flex flex-wrap gap-x-6 gap-y-2 text-sm">
+            <a href={`/${legalLang}/privacidad`}>{t('footer.privacidad')}</a>
+            <a href={`/${legalLang}/terminos`}>{t('footer.terminos')}</a>
+            <a href={`/${lang}/soporte`}>{t('footer.soporte')}</a>
+          </div>
+          {t('footer.legalNote') && <p class="text-xs text-brand-cream/40">{t('footer.legalNote')}</p>}
         </div>
         <p class="text-xs text-brand-cream/60 text-center md:text-right">
           © {new Date().getFullYear()} Bitáco. {t('footer.rights')}
