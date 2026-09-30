@@ -4,7 +4,7 @@
     "target": {
       "namespace": "android_app",
       "package_name": "com.bitaco.app",
-      "sha256_cert_fingerprints": ["A1:71:DD:8B:5E:CF:C1:4F:9C:B1:72:22:62:D8:76:2B:A9:CC:5D:B5:A4:78:C0:5F:B0:03:60:6D:28:CD:9C:A7"]
+      "sha256_cert_fingerprints": ["D7:A0:F2:39:22:3A:BF:F5:5A:67:F5:C5:83:5A:4A:D8:F5:DD:C9:1A:C7:13:C6:2E:6A:7A:D4:33:DB:F1:E9:5F"]
     }
   }
 ]
