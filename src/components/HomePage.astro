@@ -53,10 +53,8 @@ const logrosPasaporte = ['taco-pastor', 'taco-suadero', 'mezcalita', 'angel-inde
 // la app) — el resto de idiomas usa el de EN como respaldo.
 const bannerQuiz = lang === 'es' ? 'quiz-chilango.webp' : 'quiz-chilango-en.webp';
 const btnPlan = lang === 'es' ? 'btn-mi-plan-cdmx.webp' : 'btn-mi-plan-cdmx-en.webp';
-// Los badges oficiales de Apple/Google solo existen en es/en — incluso
-// aunque hoy están deshabilitados (ver comentario más abajo), evita rutas
-// rotas para el resto de idiomas.
-const badgeLang = lang === 'es' ? 'es' : 'en';
+// Badges oficiales de Apple/Google en los 5 idiomas del sitio.
+const badgeLang = lang;
 
 const titleByLang: Record<Lang, string> = {
   es: 'Bitáco — Retos y logros por la Ciudad de México',
@@ -110,7 +108,7 @@ const rotaciones = ['-rotate-2', 'rotate-1', '-rotate-1', 'rotate-2', 'rotate-1'
                 class="h-11 w-auto"
               />
               <img
-                src={`/brand/badges/google-play-${badgeLang}.png`}
+                src={`/brand/badges/google-play-${badgeLang}.svg`}
                 alt={t('hero.cta.googleplay')}
                 class="h-11 w-auto"
               />
